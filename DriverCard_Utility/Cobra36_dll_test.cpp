@@ -637,7 +637,7 @@ const char* opzioni[SCELTE]={"3T2781BAG"};
 
 	for(tasto=0; tasto<SCELTE; tasto++) cout << tasto <<": "<<opzioni[tasto] <<endl;
 
-	cout <<"*Premi il numero corrispondente all'articolo da collaudare." <<endl;
+	cout <<"*Premi il numero corrispondente all'articolo da collaudare."<<endl;
 
 	bool loop=TRUE;
 	while(loop)	//attesa pressione tasto loop
