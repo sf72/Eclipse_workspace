@@ -579,7 +579,7 @@ int com_init (HANDLE* hCOM_sub)    //configurazione della porta com con diff.bou
                } //else if (hCOM_sub!=INVALID_HANDLE_VALUE)
 
        DWORD temp;
-       COMSTAT ComState;
+       COMSTAT ComState ;
        //OVERLAPPED Overlap ;
 
        /* BOOL ClearCommError(
