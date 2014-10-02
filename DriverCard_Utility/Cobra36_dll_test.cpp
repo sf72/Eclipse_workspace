@@ -89,7 +89,7 @@ int main (void)
 	2-EV oggettivazione +12V
 	3-pulsante
 	4-pullup modulatore
-
+ inst.git
 	 */
 	cobra36_decrypt();
 	gpib_spettro();
