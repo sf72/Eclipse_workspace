@@ -580,7 +580,7 @@ int com_init (HANDLE* hCOM_sub)    //configurazione della porta com con diff.bou
 
        DWORD temp;
        COMSTAT ComState;
-       //OVERLAPPED Overlap;
+       //OVERLAPPED Overlap ;
 
        /* BOOL ClearCommError(
           HANDLE hFile,     // handle to communications device
