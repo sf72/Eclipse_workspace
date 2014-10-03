@@ -208,7 +208,7 @@ int gpib_spettro(void)
 
 	#define ARRAYSIZE  100                 // Size of read buffer
 	#define GPIB0        0                 // Board handle
-
+	#define ANALYZER_ID	"\n   02000000.00E+3\r" //risposta dello spectr analyzer advantest r4131d
 
 
 	int        loop,                       // Loop counter
@@ -426,6 +426,7 @@ int gpib_spettro(void)
 	 */
 	    char buffer[]="*IDN?";	//buffer for gpib msg by s.f.
 
+	    //(*PSendList)(GPIB0, Result, buffer, 5L, NLend);
 	    (*PSendList)(GPIB0, Result, buffer, 5L, NLend);
 	    if ((*Pibsta) & ERR)
 	    {
@@ -453,7 +454,11 @@ int gpib_spettro(void)
 	        *  an error message.
 	        */
 
-	           (*PReceive)(GPIB0, Result[loop], ReadBuffer, ARRAYSIZE, STOPend);
+	           //ZeroMemory(ReadBuffer, sizeof(ReadBuffer));
+	    		//(*PReceive)(GPIB0, Result[loop], ReadBuffer, 16, STOPend); //funzione originale
+	           //il mio spectrum analyzer return x0d='\r' x0a='\n'  alla fine del messaggio ??
+	           //altrimenti da un errore 6 EABO determinato da timeout.
+	           (*PReceive)(GPIB0, Result[loop], ReadBuffer, ARRAYSIZE, 0x0d);
 	           if ((*Pibsta) & ERR)
 	           {
 	              cout <<  "Unable to read from a device" <<endl;	//GPIBCleanup(GPIB0, "Unable to read from a device");
@@ -471,6 +476,7 @@ int gpib_spettro(void)
 	           ReadBuffer[(*Pibcntl)] = '\0';
 	           cout << "Returned string:" << ReadBuffer << endl;
 
+	           if(!strcmp(ReadBuffer, ANALYZER_ID)) cout << "Spectrum analyzer connesso. *IDN? ok." << endl;
 	    }      /*  End of FOR loop */
 
 	/* ====================================================================
@@ -482,6 +488,7 @@ int gpib_spettro(void)
 
 	} //end for (uno) di un solo ciclo per indirizzare qui i break.
 
+    if (!success) cout <<"ibsta="<<std::hex<<Pibsta<<" iberr="<<Piberr<<" error desc.= "<<ErrorMnemonic[*Piberr]<<endl;
 
 	/*  Take the board offline.                                                 */
 
@@ -494,11 +501,6 @@ int gpib_spettro(void)
 	      Gpib32Lib = NULL;
 	      cout <<"Unload dll" << endl;
 
-	      if (!success)
-	      	  {
-	    	  	  //cout <<"Error:" <<ErrorMsg<<endl; //scrive sopra
-	    	  	  cout <<"ibsta =0x"<<std::hex<<(int)*Pibsta<<"iberr ="<<std::dec<<(int)*Piberr<<"("<<ErrorMnemonic[((int)*Piberr)]<<")"<<endl;
-	      	  }
 
 	/*0
 	 *  After each GPIB call, the application checks whether the call
@@ -529,7 +531,7 @@ void GPIBCleanup(int ud, char* ErrorMsg) <<<<<<integrata in  int gpib_spettro(vo
 
 	    //FreeDll();
 
-	}
+	}_
 */
 
 int com_init (HANDLE* hCOM_sub)    //configurazione della porta com con diff.boudrate
